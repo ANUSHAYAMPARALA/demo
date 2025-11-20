@@ -1,0 +1,46 @@
+
+install git,java,maven
+$ sudo yum install git -y
+$ sudo yum install java-17-amazon-corretto-devel
+vi .bashrc
+	export JAVA_HOME='/usr/lib/jvm/java-17-amazon-corretto.x86_64/'
+install maven:
+# cd /opt
+# wget https://dlcdn.apache.org/maven/maven-3/3.9.11/binaries/apache-maven-3.9.11-bin.tar.gz
+# tar -xvzf apache-maven-3.9.11-bin.tar.gz
+# mv apache-maven-3.9.11 maven
+# nano .bashrc
+	export M2_HOME='opt/maven'
+	export PATH=$PATH:/opt/maven/bin
+installing Jenkins:
+===================
+# wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+# rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+# yum update
+# yum install jenkins -y
+# sudo systemctl start Jenkins
+# cat /var/lib/jenkins/secrets/initialAdminPassword
+outputs a password
+=>copy the public ip of Jenkins machine in the browser and open it with 8080 port number
+a web page will be opened and let u enter the initialAdminPassword 
+paste the password copied 
+then=>select plugins to install=>deselect all the plugins=>click install=>
+asks to setup username and password
+provide the necessary details and click next
+in the home page
+	goto to manage Jenkins plugins=>availableplugins=>search for git install 5.8.0
+                                                        =>select maven integration 3.2.7 then install
+go back to Jenkins:
+  create a new item =>name it as helloworld webapp, type maven project
+  configure the job=>set source code management as git
+                     => place the GitHub url of maven project
+                     => change the /master to /main
+		     => post build actions make it clean install
+and then move on to manage Jenkins ->tools->add jdk=>name=>Java=>path of javahome ---/usr/lib/jvm...
+                                          ->add git
+                                          -> add maven->name=>Maven=>maven home /opt/maven apply and save
+before building the application move to jenkins->node->bulitin node->configure
+                                                                    =>node properties=>Diskspace monitoring set everything to 0 and click apply and save
+then build the job
+
+
