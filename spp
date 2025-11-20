@@ -1,0 +1,19 @@
+publish over ssh:
+=====================
+for publish over ssh
+=>create a new job,
+=>manage=>plugins=>available plugins=>search for publish over ssh =>install
+next manage jenkins=>system=>publish over ssh=>ssh server=>in that add name=>tomcat-server
+									Host-name=>IP address of tomcat
+									username:ec2-user
+							then check for password authentication=>
+				in the key field copy pase the awskey of tomcat server=>save
+
+=>navigate back to job =>configure=>post build actions=>add post build action=>send build ssh=>
+				in the transfer=>source files: target/helloworld.war
+					       =>remove prefix=>target
+					       =>remove directory=>//opt//tomcat//webapps
+=>apply and save
+before building it =>in the tomcat run these two commands=>
+$ sudo usermod -aG root ec2-user
+$ sudo chmod -R g+w /opt/tomcat/webapps
