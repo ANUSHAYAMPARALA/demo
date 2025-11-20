@@ -1,0 +1,53 @@
+docker:
+==================
+$ sudo yum install docker -y
+$ docker --version
+$ sudo systemctl start docker
+$ sudo su -
+# docker images
+# docker ps
+# useradd dockeradmin
+# passwd dockeradmin
+typepassword
+
+dockerfile should be created on normal user
+
+$ nano Dockerfile
+	FROM tomcat:latest
+	RUN cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps/
+	COPY helloworld.war /usr/local/tomcat/webapps/
+# sudo usermod -aG docker dockeradmin
+# sudo groups dockeradmin
+# sudo nano /etc/ssh/sshd_config
+	change password authentication to yes
+# sudo systemctl restart sshd
+# ssh dockeradmin@172.31.9.6(docker privateip)
+   enter docker password
+$ docker pull tomcat
+$ docker run -d --name tomcat-container -p 8081:8080 tomcat
+$ su - dockeradmin
+$ docker rm -f tomcat-container
+=========================
+Jenkins job for docker
+====>
+after executing the above commands
+login to Jenkins account=>
+managejenkins=>system=>ssh servers=>add=>name:Dockerhost
+				       =>Hostname:docker machine private ip
+  				       =>username:dockeradmin
+				       =>advanced=>use password authentication=>enter password that you have 
+					created for docker
+                                       apply and save
+
+=>jenkins=>new item-=>name,desc,git=>
+postbuildsteps==>send files or execute commands over ssh
+           ssh server
+          name:DockerHost
+          transferset
+		source file: target/helloworld.war
+		remove prefix:target/
+   		execute command:
+			docker build -t tomcat .
+			docker run -d --name tomcat-container -p 8081:8080 tomcat
+        apply & save
+=====>build success
