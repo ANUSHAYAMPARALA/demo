@@ -1,0 +1,13 @@
+deploy to a container
+=====================
+doing the above steps you will set the java,git,maven variables...
+go to plugins=>available plugins =>search deploy to container and install it
+now move to manage jenkins=>credentails=>system=>globalcredentails=>add credentails=>
+		=>set username:=> tomcatscript
+	              password:=>tomcatscriptpwd
+                      id:=>tomcatscript
+description:credentails to connect to remote tomcat and to be able to deploy applications
+navigate to the deplotocontainer job=>add postbuild action =>war/ear files=>
+                    war/ear=>  target/helloworld.war
+                    contextpath=>/helloworld
+                    add tomcattomcat container
